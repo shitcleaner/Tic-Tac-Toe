@@ -108,9 +108,19 @@ class Board extends React.Component {
 
     const renderMoveBtn = this.state.clickcount.map(i => {
       if (i === 0) {
-        return <button> Start the Game! </button>;
+        return (
+          <p>
+            {" "}
+            <button> Start the Game! </button>
+          </p>
+        );
       } else {
-        return <button> You've made the {i}th Move! </button>;
+        return (
+          <p>
+            {" "}
+            <button> You've made the {i}th Move! </button>{" "}
+          </p>
+        );
       }
     });
 
@@ -135,7 +145,7 @@ class Board extends React.Component {
         <div>
           {" "}
           <h2> History of your Moves </h2>
-          {renderMoveBtn}
+          <p>{renderMoveBtn} </p>
         </div>
       </div>
     );
