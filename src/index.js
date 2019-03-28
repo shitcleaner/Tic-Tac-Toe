@@ -13,9 +13,9 @@ ReactDOM.render(<App />, document.getElementById("root"));
 // Learn more about service workers: https://bit.ly/CRA-PWA
 serviceWorker.unregister();
 
-// Square component: w/t "state" variables : a function component 
-// O: A button: with 
-// C:- onclick event function  - and text value : receives "props" 
+// Square component: w/t "state" variables : a function component
+// O: A button: with
+// C:- onclick event function  - and text value : receives "props"
 
 function Square(props) {
   return (
@@ -24,76 +24,98 @@ function Square(props) {
     </button>
   );
 }
-//Board: class component: with "states" variables/objects whose changes need to be tracked/ recorded for further use. 
-// O: 9 buttons: "Square" components objects 
-// C: the status objects of the whole board of game for "calculating winner","history panel"  features  
+//Board: class component: with "states" variables/objects whose changes need to be tracked/ recorded for further use.
+// O: 9 buttons: "Square" components objects
+// C: the status objects of the whole board of game for "calculating winner","history panel"  features
 // P: - contructor()+ render()
-//- the onclickhandler():=> pass as a "function props" to the Square to change the status of the "Squares" 
+//- the onclickhandler():=> pass as a "function props" to the Square to change the status of the "Squares"
 
 class Board extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      squares: Array(9).fill(null) ,
+      squares: Array(9).fill(null),
       xIsNext: true,
       counter: 0,
-      clickcount: [] , 
+      clickcount: []
     };
   }
- 
+
   handleClick(i) {
     const squareArray = this.state.squares;
     squareArray[i] = this.state.xIsNext ? "X" : "O";
     // squares[i] = 'X';
-    let counter = this.state.counter + 1; 
-    let count = this.state.clickcount.concat(counter); 
-    console.log (count); 
-    this.setState({ squares: squareArray, xIsNext: !this.state.xIsNext, counter: counter, clickcount: count});
-    
-    console.log(this.state.squares); 
-    let Winner = this.calculateWinner(squareArray[i]);   
-    if(Winner || squareArray[i] ){
-      return; 
+    let counter = this.state.counter + 1;
+    let count = this.state.clickcount.concat(counter);
+    console.log(count);
+    this.setState({
+      squares: squareArray,
+      xIsNext: !this.state.xIsNext,
+      counter: counter,
+      clickcount: count
+    });
+
+    console.log(this.state.squares);
+    let Winner = this.calculateWinner(squareArray[i]);
+    if (Winner || squareArray[i]) {
+      return;
     }
   }
-  
-  // Board.P: calculateWinner()  
-  
+
+  // Board.P: calculateWinner()
+
   calculateWinner(squares) {
-    
-    let winnerArray = [[0,1,2],[3,4,5],[6,7,8],[2,5,8],[0,3,6],[0,4,8],[2,4,6],[1,4,7] ]; 
-    for ( let i=0;i<winnerArray.length;i++ ){
-       const [a,b,c] = winnerArray[i]; 
-    if (squares[a] && squares[a] === squares[b] && squares[b]=== squares[c])
-    {return squares[a]; }
+    let winnerArray = [
+      [0, 1, 2],
+      [3, 4, 5],
+      [6, 7, 8],
+      [2, 5, 8],
+      [0, 3, 6],
+      [0, 4, 8],
+      [2, 4, 6],
+      [1, 4, 7]
+    ];
+    for (let i = 0; i < winnerArray.length; i++) {
+      const [a, b, c] = winnerArray[i];
+      if (
+        squares[a] &&
+        squares[a] === squares[b] &&
+        squares[b] === squares[c]
+      ) {
+        return squares[a];
       }
+    }
     return null;
   }
 
   renderSquare(i) {
     return (
       <Square
-        value={this.state.squares[i]} 
+        value={this.state.squares[i]}
         onClick={() => this.handleClick(i)}
       />
     );
   }
-  renderMoveBtn(arr){  
-    arr.map(i => { if (i===0) { return (<button> Start the Game! </button>);}
-    else  
-    {return (<button> You've made the {i}th Move! </button> );  } }  );
-  }
 
   render() {
     let status;
-    let Winner = this.calculateWinner(this.state.squares); 
-    if (Winner)
-    { status ='Congratulations!' +"  " + Winner +"  You won !";}
-    else { status = 'Next player: ' + (this.state.xIsNext ? 'X' : 'O');}
-      
-  return(
+    let Winner = this.calculateWinner(this.state.squares);
+    if (Winner) {
+      status = "Congratulations!" + "  " + Winner + "  You won !";
+    } else {
+      status = "Next player: " + (this.state.xIsNext ? "X" : "O");
+    }
+
+    const renderMoveBtn = this.state.clickcount.map(i => {
+      if (i === 0) {
+        return <button> Start the Game! </button>;
+      } else {
+        return <button> You've made the {i}th Move! </button>;
+      }
+    });
+
+    return (
       <div>
-        
         <div className="status">{status}</div>
         <div className="board-row">
           {this.renderSquare(0)}
@@ -110,18 +132,15 @@ class Board extends React.Component {
           {this.renderSquare(7)}
           {this.renderSquare(8)}
         </div>
-        <div> <h2> History of your Moves </h2>
-         {this.renderMoveBtn(this.state.clickcount)}
+        <div>
+          {" "}
+          <h2> History of your Moves </h2>
+          {renderMoveBtn}
         </div>
-        
-      
       </div>
-      
-    );} 
+    );
   }
-
-
-
+}
 
 class Game extends React.Component {
   render() {
