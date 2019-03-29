@@ -3,10 +3,13 @@ import ReactDOM from "react-dom";
 import "./index.css";
 import App from "./App";
 import * as serviceWorker from "./serviceWorker";
+import UpdateScore from "./updateScores";
+import FBLogin from "./fbLogin";
+
 // import { Container, Row, Col, Jumbotron, Card, CardImg, CardText, CardBody,
 //   CardTitle, CardSubtitle} from 'reactstrap';
 
-ReactDOM.render(<App />, document.getElementById("root"));
+//ReactDOM.render(<App />, document.getElementById("root"));
 
 // If you want your app to work offline and load faster, you can change
 // unregister() to register() below. Note this comes with some pitfalls.
@@ -37,7 +40,7 @@ class Board extends React.Component {
       squares: Array(9).fill(null),
       xIsNext: true,
       counter: 0,
-      clickcount: []
+      clickcount: [0]
     };
   }
 
@@ -114,14 +117,13 @@ class Board extends React.Component {
             <button> Start the Game! </button>
           </p>
         );
-      } else {
-        return (
-          <p>
-            {" "}
-            <button> You've made the {i}th Move! </button>{" "}
-          </p>
-        );
       }
+      return (
+        <p>
+          {" "}
+          <button> You've made the {i}th Move! </button>{" "}
+        </p>
+      );
     });
 
     return (
@@ -156,9 +158,17 @@ class Game extends React.Component {
   render() {
     return (
       <div className="game">
+        <div>
+          {" "}
+          <FBLogin />{" "}
+        </div>
         <div className="game-board">
           <Board />
         </div>
+        <div>
+          <UpdateScore />{" "}
+        </div>
+        <div className="App" />
         <div className="game-info">
           <div>{/* status */}</div>
           <ol>{/* TODO */}</ol>
